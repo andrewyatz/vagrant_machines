@@ -1,6 +1,20 @@
 #!/bin/sh
 
-export ENSEMBL_VERSION=74
+ENSEMBL_VERSION=$1
+GUI=$2
+
+if [ -z "$ENSEMBL_VERSION" ]; then
+  echo 'Cannot find the API version. Make sure this has been given to the script' >2
+  exit
+fi
+
+# Global user settings
+user=ensembl
+home=/home/$user
+
+# Add the ensembl user & make it able to sudo 
+useradd -d $home -s /bin/bash -U -m $user
+usermod -a -G sudo $user
 
 # Install APT dependencies
 apt-get clean
@@ -11,13 +25,22 @@ apt-get update
 apt-get install -y git
 apt-get install -y cpanminus libmodule-install-perl libxml-libxml-perl libtest-xml-simple-perl
 apt-get install -y libdbi-perl libdbd-mysql-perl
+
+if [ -n "$GUI" ]; then
+  apt-get update
+  add-apt-repository ppa:gnome3-team/gnome3
+  apt-get install -y  --no-install-recommends gnome-shell
+  apt-get install -y --no-install-recommends ubuntu-desktop
+  apt-get install -y --no-install-recommends gdm
+  # dpkg-reconfigure gdm
+fi
+
 apt-get clean
 
-home=~vagrant
-
 # Run the post installation script
-$home/postinstall.sh
+# /home/vagrant/postinstall.sh
 
+: <<'END'
 # Install Ensembl Git Tools
 if [ -d $home/programs ]; then
   rm -rf $home/programs
@@ -42,4 +65,5 @@ $home/programs/ensembl-git-tools/bin/git-ensembl --clone --depth 1 --branch "rel
 cp /vagrant/settings/profile $home/.profile
 
 # Chown and chgrp all files to vagrant user 
-chown -R vagrant:vagrant $home/.profile $home/src $home/programs
+chown -R $user:$user $home/.profile $home/src $home/programs
+END
