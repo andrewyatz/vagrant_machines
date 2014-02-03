@@ -15,6 +15,7 @@ home=/home/$user
 # Add the ensembl user & make it able to sudo 
 useradd -d $home -s /bin/bash -U -m $user
 usermod -a -G sudo $user
+passwd -d ensembl
 
 # Install APT dependencies
 apt-get clean
