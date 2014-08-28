@@ -31,4 +31,5 @@ PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl/modules
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-compara/modules
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-variation/modules
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-funcgen/modules
+PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-test/modules
 export PERL5LIB

@@ -14,6 +14,7 @@
 # limitations under the License.
 
 ENSEMBL_VERSION=$1
+TEST_ENV=$2
 if [ -z "$ENSEMBL_VERSION" ]; then
   echo 'Cannot find the API version. Make sure this has been given to the script' >2
   exit
@@ -34,6 +35,29 @@ apt-get install -y libtest-differences-perl libtest-json-perl libtest-xml-simple
 # Clean up
 apt-get clean
 
+# Installing MySQL for development purposes. Also putting in an ro & rw user
+if [ -n "$TEST_ENV" ]; then
+
+  apt-get install -y python-software-properties
+  apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
+  add-apt-repository 'deb http://mirrors.coreix.net/mariadb/repo/10.0/ubuntu precise main'
+
+  apt-get update
+
+  echo "mysql-server mysql-server/root_password select vagrant" | debconf-set-selections
+  echo "mysql-server mysql-server/root_password_again select vagrant" | debconf-set-selections
+  apt-get install -y mariadb-server
+
+  service mysql stop
+  cp /vagrant/settings/my.cnf /etc/mysql/my.cnf
+  service mysql start
+
+  /usr/bin/mysql -uroot -pvagrant -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'vagrant' WITH GRANT OPTION; FLUSH PRIVILEGES"
+  /usr/bin/mysql -uroot -pvagrant -e "CREATE USER 'ro'@'%'; GRANT SELECT ON *.* TO 'ro'@'%'; FLUSH PRIVILEGES"
+  /usr/bin/mysql -uroot -pvagrant -e "CREATE USER 'rw'@'%'; GRANT ALL PRIVILEGES ON *.* TO 'rw'@'%'; FLUSH PRIVILEGES"
+
+  apt-get clean
+fi
 
 # Go for catalyst & main dependencies from CPAN
 cpanm Module::Install
@@ -52,6 +76,9 @@ cpanm CHI CHI::Driver::Memcached::Fast
 # Test case dependencies
 cpanm Test::XPath Test::XML::Simple
 
+# ensembl-test dependencies
+cpanm Devel::Peek Devel::Cycle Error IO::String PadWalker Test::Builder::Module
+
 # User settings
 home=/home/vagrant
 user=vagrant
@@ -66,7 +93,7 @@ git clone https://github.com/Ensembl/ensembl-git-tools.git
 cd $home
 
 # Install BioPerl
-mkdir $home/src
+mkdir -p $home/src
 cd $home/src
 wget https://github.com/bioperl/bioperl-live/archive/bioperl-release-1-2-3.tar.gz
 tar zxf bioperl-release-1-2-3.tar.gz
@@ -74,8 +101,8 @@ mv bioperl-live-bioperl-release-1-2-3 bioperl-1.2.3
 
 # Install Ensembl APIs using shallow clone & move onto the release branch
 cd $home/src
-$home/programs/ensembl-git-tools/bin/git-ensembl --clone rest
-$home/programs/ensembl-git-tools/bin/git-ensembl --checkout --branch "release/$ENSEMBL_VERSION" rest
+$home/programs/ensembl-git-tools/bin/git-ensembl --clone rest ensembl-test
+$home/programs/ensembl-git-tools/bin/git-ensembl --checkout --branch "release/$ENSEMBL_VERSION" rest ensembl-test
 
 # Copy settings into place
 cp /vagrant/settings/profile $home/.profile
