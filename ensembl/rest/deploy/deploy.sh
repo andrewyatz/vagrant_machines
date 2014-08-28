@@ -107,6 +107,10 @@ $home/programs/ensembl-git-tools/bin/git-ensembl --checkout --branch "release/$E
 # Copy settings into place
 cp /vagrant/settings/profile $home/.profile
 
+if [ -n "$TEST_ENV" ]; then
+  cp /vagrant/settings/MultiTestDB.conf $home/src/ensembl-rest/t/.
+fi
+
 # Chown all these files to vagrant
 chown -R $user:$user $home/.profile $home/src $home/programs
 
