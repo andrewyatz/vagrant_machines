@@ -6,6 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 # Set the Ensembl version here
 ENSEMBL_API_VERSION = ENV['ENSEMBL_API_VERSION'] || "76"
+
 # Set TEST_ENV to nothing to stop deploying a MariaDB along with your server
 TEST_ENV = 'true'
 
