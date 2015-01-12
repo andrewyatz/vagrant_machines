@@ -1,3 +1,4 @@
 .vagrant
 /ensembl/rest/rest-src
 /crossmap
+/elastic_logstash_kibana/*.log*
