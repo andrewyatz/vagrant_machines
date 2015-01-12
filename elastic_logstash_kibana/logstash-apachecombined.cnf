@@ -1,0 +1,19 @@
+input {
+  tcp {
+    port => 5001
+    type => 'rest_log'
+  }
+}
+
+filter {
+  grok {
+    match => { "message" => "%{COMBINEDAPACHELOG}" }
+  }
+  date {
+    match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+  }
+}
+
+output {
+  elasticsearch { host => localhost }
+}
