@@ -21,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 4000, host: 4000, id: "jekyll"
-  config.vm.network "forwarded_port", guest: 22, host: 22221, id: "ssh"
+  config.vm.network "forwarded_port", guest: 22, host: 22290, id: "ssh"
   
   config.vm.provision :shell, :inline => "sudo apt-get update && sudo apt-get install ruby ruby-dev make gcc nodejs && sudo gem install jekyll --no-rdoc --no-ri"
   
