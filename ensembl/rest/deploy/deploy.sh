@@ -98,7 +98,7 @@ mv bioperl-live-bioperl-release-1-6-9 bioperl-1.6.9
 
 # Install Tabix locally
 wget https://github.com/samtools/tabix/archive/master.tar.gz
-tar zxf tabix-master.tar.gz
+tar zxf master.tar.gz
 (cd tabix-master && make)
 (cd tabix-master/perl && perl Makefile.PL && make)
 
