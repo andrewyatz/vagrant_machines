@@ -26,10 +26,16 @@ if [ -d "$HOME/programs/ensembl-git-tools/bin" ]; then
 fi
 
 # Set up PERL5LIB
-PERL5LIB=${PERL5LIB}:${HOME}/src/bioperl-1.2.3
+PERL5LIB=${PERL5LIB}:${HOME}/src/bioperl-1.6.9
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl/modules
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-compara/modules
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-variation/modules
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-funcgen/modules
 PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-test/modules
+PERL5LIB=${PERL5LIB}:${HOME}/src/ensembl-io/modules
+PERL5LIB=${PERL5LIB}:${HOME}/src/tabix-master/perl/blib/lib:${HOME}/src/tabix-master/perl/blib/arch
 export PERL5LIB
+
+# Setup LD_LIBRARY_PATH
+LD_LIBRARY_PATH=${HOME}/src/tabix-master/
+export LD_LIBRARY_PATH

@@ -67,9 +67,6 @@ cpanm Hash::Merge
 # Going for the other CPANM dependencies
 cpanm Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Action::RenderView Catalyst::Component::InstancePerContext Catalyst::View::JSON Log::Log4perl::Catalyst Catalyst::Plugin::Cache Parse::RecDescent Catalyst::Controller::REST Catalyst::View::TT
 
-# Only odd dependency is on 0.19 of subrequest
-cpanm EDENC/Catalyst-Plugin-SubRequest-0.19.tar.gz
-
 # CHI dependencies
 cpanm CHI CHI::Driver::Memcached::Fast
 
@@ -95,9 +92,15 @@ cd $home
 # Install BioPerl
 mkdir -p $home/src
 cd $home/src
-wget https://github.com/bioperl/bioperl-live/archive/bioperl-release-1-2-3.tar.gz
-tar zxf bioperl-release-1-2-3.tar.gz
-mv bioperl-live-bioperl-release-1-2-3 bioperl-1.2.3
+wget https://github.com/bioperl/bioperl-live/archive/bioperl-release-1-6-9.tar.gz
+tar zxf bioperl-release-1-6-9.tar.gz
+mv bioperl-live-bioperl-release-1-6-9 bioperl-1.6.9
+
+# Install Tabix locally
+wget https://github.com/samtools/tabix/archive/master.tar.gz
+tar zxf tabix-master.tar.gz
+(cd tabix-master && make)
+(cd tabix-master/perl && perl Makefile.PL && make)
 
 # Install Ensembl APIs using shallow clone & move onto the release branch
 cd $home/src
