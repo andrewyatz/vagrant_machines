@@ -12,7 +12,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, guest: 22, host: 2229, id: "ssh"
   config.vm.provision :shell, :path => "deploy/deploy.sh"
   
-  config.vm.provider :virtualbox do |vb|
-    vb.name = "mariadb_32bit"
+  config.vm.provider :virtualbox do |v|
+    v.name = "mariadb_32bit"
+    v.memory = 2048
   end
 end
