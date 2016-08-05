@@ -27,6 +27,7 @@ echo 'deb http://ca.archive.ubuntu.com/ubuntu/ precise-updates universe' >> /etc
 echo 'deb http://ca.archive.ubuntu.com/ubuntu/ precise-updates multiverse' >> /etc/apt/sources.list
 apt-get update
 apt-get install -y git vim
+apt-get install -y libxml2-dev
 apt-get install -y cpanminus libxml-libxml-perl libxml-simple-perl libxml-writer-perl
 apt-get install -y libdbi-perl libdbd-mysql-perl
 apt-get install -y build-essential
